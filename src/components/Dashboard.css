@@ -1,0 +1,39 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+.metric-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin: 15px auto;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.metric-card h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.metric-card p {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.highlight {
+  background-color: #e8f5e9;
+}
+
+.chart-container {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
