@@ -1,3 +1,4 @@
+/* Existing styles */
 .App {
   text-align: center;
 }
@@ -35,4 +36,29 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* New styles for wallet button */
+.wallet-button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100; /* Ensure button appears on top of other elements */
+}
+
+.wallet-button:hover {
+  background-color: #0056b3;
+}
+
+.wallet-button:disabled {
+  background-color: #999999;
+  cursor: not-allowed;
 }
