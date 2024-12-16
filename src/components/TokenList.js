@@ -4,17 +4,27 @@ import './TokenList.css';
 
 const TokenList = () => {
   const [tokens, setTokens] = useState([]); // CoinGecko tokens
-  const [userTokens, setUserTokens] = useState([]); // User-listed tokens
-  const [loading, setLoading] = useState(true); // Loading state
-  const [showCarbonOnly, setShowCarbonOnly] = useState(false); // Toggle carbon-only tokens
+  const [allTokens, setAllTokens] = useState([]); // All tokens for filtering
+  const [userTokens, setUserTokens] = useState([]); // User-submitted tokens
+  const [loading, setLoading] = useState(true);
+  const [showCarbonOnly, setShowCarbonOnly] = useState(false); // Toggle carbon tokens
 
-  // 🔥 Function to fetch tokens from CoinGecko
+  // State for form input
+  const [formData, setFormData] = useState({
+    name: '',
+    symbol: '',
+    amount: '',
+    price: '',
+  });
+
+  // Fetch CoinGecko tokens
   const fetchAllTokens = async () => {
     try {
       const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
-        params: { vs_currency: 'usd', order: 'market_cap_desc', per_page: 50, page: 1 },
+        params: { vs_currency: 'usd', order: 'market_cap_desc', per_page: 20, page: 1 },
       });
       setTokens(response.data);
+      setAllTokens(response.data);
     } catch (error) {
       console.error('Error fetching tokens:', error);
     } finally {
@@ -22,107 +32,144 @@ const TokenList = () => {
     }
   };
 
-  // 🔥 Filter Carbon Tokens
-  const filterCarbonTokens = () => {
-    return tokens.filter((token) =>
-      token.name.toLowerCase().includes('carbon') || token.symbol.toLowerCase().includes('co2')
-    );
-  };
-
-  // 🔥 Update Live Prices (every 60 seconds)
+  // Update live prices every 60 seconds
   const updateLivePrices = async () => {
     try {
-      const ids = tokens.map((token) => token.id).join(',');
+      const ids = allTokens.map(token => token.id).join(',');
       const response = await axios.get('https://api.coingecko.com/api/v3/simple/price', {
         params: { ids, vs_currencies: 'usd' },
       });
 
-      const updatedTokens = tokens.map((token) => ({
+      const updatedTokens = allTokens.map(token => ({
         ...token,
         current_price: response.data[token.id]?.usd || token.current_price,
       }));
 
-      setTokens(updatedTokens);
+      setTokens(showCarbonOnly
+        ? updatedTokens.filter(token => token.name.toLowerCase().includes('carbon'))
+        : updatedTokens
+      );
+
+      setAllTokens(updatedTokens);
     } catch (error) {
       console.error('Error updating prices:', error);
     }
   };
 
-  // 🟢 Form Submission to Add User Tokens
-  const handleUserTokenSubmit = (e) => {
+  // Handle form submission
+  const handleFormSubmit = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-
-    const newUserToken = {
-      id: Date.now(),
-      name: formData.get('tokenName'),
-      symbol: formData.get('symbol'),
-      amount: formData.get('amount'),
-      price: formData.get('price'),
+    const newToken = {
+      id: Date.now(), // Temporary ID
+      name: formData.name,
+      symbol: formData.symbol.toUpperCase(),
+      amount: formData.amount,
+      price: parseFloat(formData.price).toFixed(2),
     };
-
-    setUserTokens([...userTokens, newUserToken]);
-    e.target.reset();
+    setUserTokens([...userTokens, newToken]);
+    setFormData({ name: '', symbol: '', amount: '', price: '' });
   };
 
-  // 🔄 UseEffect Hooks
-  useEffect(() => {
-    fetchAllTokens(); // Fetch CoinGecko tokens on mount
-    const interval = setInterval(() => updateLivePrices(), 60000); // Update prices every 60s
-    return () => clearInterval(interval);
-  }, [tokens]);
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
-  // 🟢 Handle Carbon Toggle
-  const handleToggle = () => setShowCarbonOnly(!showCarbonOnly);
+  // Toggle carbon tokens
+  const handleToggle = () => {
+    setShowCarbonOnly(!showCarbonOnly);
+    if (!showCarbonOnly) {
+      const carbonTokens = allTokens.filter(token =>
+        token.name.toLowerCase().includes('carbon') || token.symbol.toLowerCase().includes('co2')
+      );
+      setTokens(carbonTokens);
+    } else {
+      setTokens(allTokens);
+    }
+  };
+
+  // Initial fetch and price update
+  useEffect(() => {
+    fetchAllTokens();
+    const interval = setInterval(updateLivePrices, 60000);
+    return () => clearInterval(interval);
+  }, [showCarbonOnly]);
 
   return (
     <div className="token-list">
       <h2>Available Tokens</h2>
-
-      {/* Carbon Token Toggle */}
       <button onClick={handleToggle} className="filter-button">
         {showCarbonOnly ? 'Show All Tokens' : 'Show Only Carbon Tokens'}
       </button>
 
-      {/* Display CoinGecko Tokens */}
       {loading ? (
         <p>Loading tokens...</p>
       ) : (
         <div className="token-container">
-          {(showCarbonOnly ? filterCarbonTokens() : tokens).map((token) => (
-            <div className="token-card" key={token.id}>
+          {tokens.map(token => (
+            <div key={token.id} className="token-card">
               <img src={token.image} alt={token.name} className="token-image" />
-              <h3>{token.name} ({token.symbol.toUpperCase()})</h3>
+              <h3>{token.name} ({token.symbol})</h3>
               <p>Price: ${token.current_price ? token.current_price.toFixed(2) : 'N/A'}</p>
             </div>
           ))}
         </div>
       )}
 
-      <hr />
+      {/* Form to List User Tokens */}
+      <div className="form-container">
+        <h3>List Your Token for Sale</h3>
+        <form onSubmit={handleFormSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Token Name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="text"
+            name="symbol"
+            placeholder="Symbol"
+            value={formData.symbol}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="number"
+            name="amount"
+            placeholder="Amount"
+            value={formData.amount}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="number"
+            name="price"
+            placeholder="Price (USD)"
+            value={formData.price}
+            onChange={handleInputChange}
+            required
+          />
+          <button type="submit" className="submit-button">List Token</button>
+        </form>
+      </div>
 
-      {/* User-Listed Tokens Form */}
-      <h2>List Your Token for Sale</h2>
-      <form onSubmit={handleUserTokenSubmit}>
-        <input name="tokenName" placeholder="Token Name" required />
-        <input name="symbol" placeholder="Symbol" required />
-        <input name="amount" type="number" placeholder="Amount" required />
-        <input name="price" type="number" placeholder="Price (USD)" required />
-        <button type="submit" className="submit-button">List Token</button>
-      </form>
-
-      {/* Display User-Listed Tokens */}
+      {/* Display User-Submitted Tokens */}
+      <h3>Your Listed Tokens</h3>
       <div className="token-container">
         {userTokens.length > 0 ? (
-          userTokens.map((token) => (
-            <div className="token-card" key={token.id}>
-              <h3>{token.name} ({token.symbol.toUpperCase()})</h3>
+          userTokens.map(token => (
+            <div key={token.id} className="token-card">
+              <h3>{token.name} ({token.symbol})</h3>
               <p>Amount: {token.amount}</p>
-              <p>Price: ${parseFloat(token.price).toFixed(2)}</p>
+              <p>Price: ${token.price}</p>
             </div>
           ))
         ) : (
-          <p>No tokens listed for sale yet.</p>
+          <p>No tokens listed yet.</p>
         )}
       </div>
     </div>

@@ -1,104 +1,128 @@
-/* Container for all tokens */
+/* General Styles for the Token List */
+.token-list {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.token-list h2,
+.token-list h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Toggle Button */
+.filter-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
+/* Container for Tokens */
 .token-container {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
 }
 
-/* Individual token card styling */
+/* Token Card */
 .token-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
   padding: 15px;
-  width: 200px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
-  background-color: #f9f9f9;
-  transition: transform 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .token-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Token image styling */
 .token-image {
-  width: 64px;
-  height: 64px;
+  max-width: 60px;
   margin-bottom: 10px;
 }
 
-/* Token card text styling */
 .token-card h3 {
-  margin-bottom: 8px;
-  font-size: 1.1em;
+  margin: 10px 0;
   color: #333;
+  font-size: 18px;
 }
 
 .token-card p {
-  margin: 4px 0;
-  color: #555;
-}
-
-/* Loading text styling */
-.loading-text {
-  font-size: 1.2em;
   color: #666;
-  margin-top: 20px;
-  text-align: center;
+  margin: 5px 0;
 }
 
-/* Token form styling */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+/* Form Styles */
+.form-container {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-form h3 {
-  margin-bottom: 10px;
-  text-align: center;
+.form-container h3 {
+  margin-bottom: 15px;
   color: #333;
 }
 
-input {
+form input {
+  width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1em;
-}
-
-button.submit-button,
-button.filter-button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 1em;
-  transition: background-color 0.2s ease-in-out;
-}
-
-button.submit-button:hover,
-button.filter-button:hover {
-  background-color: #0056b3;
-}
-
-/* Toggle button styling */
-.filter-button {
-  margin-top: 20px;
   margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
-/* Section Title */
-h2 {
+form input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.submit-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+/* Loading State */
+.token-list p {
+  font-size: 18px;
+  color: #666;
   text-align: center;
-  color: #222;
-  margin-top: 20px;
 }
