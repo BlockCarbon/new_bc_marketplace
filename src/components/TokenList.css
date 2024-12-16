@@ -1,0 +1,95 @@
+.token-list {
+  text-align: center;
+  padding: 20px;
+}
+
+.token-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.token-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  width: 150px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.token-card:hover {
+  transform: translateY(-10px);
+}
+
+.token-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.token-card h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.token-card p {
+  font-size: 14px;
+  color: #333;
+}
+
+.filter-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
+.token-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.token-card {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  width: 150px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.token-card:hover {
+  transform: translateY(-10px);
+}
+
+.token-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.token-card h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.token-card p {
+  font-size: 14px;
+  color: #333;
+}
