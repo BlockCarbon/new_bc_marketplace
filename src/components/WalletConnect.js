@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
+import { useWallet } from '../context/WalletContext'; // Import WalletContext hook
 import metamaskLogo from '../assets/metamask.png';
 import namiLogo from '../assets/nami.png';
 
 const WalletConnect = () => {
-  const [metamaskAddress, setMetamaskAddress] = useState('');
-  const [namiAddress, setNamiAddress] = useState('');
+  const { walletAddress, walletType, connectWallet } = useWallet(); // Use global context from WalletContext
   const [error, setError] = useState('');
 
-  // Connect to MetaMask
+  // 🔥 Function to connect MetaMask
   const connectMetaMask = async () => {
     if (window.ethereum) {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setMetamaskAddress(accounts[0]);
+        connectWallet('MetaMask', accounts[0]); // Update global context
       } catch (err) {
         setError('Failed to connect MetaMask wallet');
       }
@@ -21,13 +21,13 @@ const WalletConnect = () => {
     }
   };
 
-  // Connect to Nami Wallet
+  // 🔥 Function to connect Nami Wallet (Cardano)
   const connectNamiWallet = async () => {
     if (window.cardano && window.cardano.nami) {
       try {
-        await window.cardano.nami.enable();
-        const namiAccounts = await window.cardano.nami.getUsedAddresses();
-        setNamiAddress(namiAccounts[0]);
+        const namiApi = await window.cardano.nami.enable();
+        const namiAccounts = await namiApi.getUsedAddresses();
+        connectWallet('Nami', namiAccounts[0]); // Update global context
       } catch (err) {
         setError('Failed to connect Nami wallet');
       }
@@ -101,8 +101,12 @@ const WalletConnect = () => {
 
       {/* Wallet Connection Status */}
       <div style={{ marginTop: '30px', fontSize: '16px' }}>
-        {metamaskAddress && <p>MetaMask Address: {metamaskAddress}</p>}
-        {namiAddress && <p>Nami Wallet Address: {namiAddress}</p>}
+        {walletAddress && (
+          <p>
+            <strong>Connected Wallet ({walletType}):</strong> {walletAddress.slice(0, 6)}...
+            {walletAddress.slice(-4)}
+          </p>
+        )}
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
     </div>

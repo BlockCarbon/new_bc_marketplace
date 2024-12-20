@@ -1,0 +1,95 @@
+/* Container for the Assets tab */
+.assets-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Header for the page */
+.assets-header {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Portfolio Overview */
+.portfolio-overview {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.info-card {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  width: 45%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h3 {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.info-card p {
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Portfolio Distribution Chart */
+.portfolio-distribution {
+  max-width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+}
+
+/* Token Table */
+.asset-list {
+  margin-top: 30px;
+}
+
+.asset-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.asset-table th, .asset-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.asset-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.asset-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.asset-table tr:hover {
+  background-color: #ddd;
+}
+
+.asset-table td {
+  color: #555;
+}
