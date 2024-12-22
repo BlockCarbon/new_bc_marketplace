@@ -23,7 +23,6 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTokenData = async () => {
       try {
-        // Fetch token data from CoinGecko API
         const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
           params: {
             vs_currency: 'usd',
@@ -36,11 +35,11 @@ const Dashboard = () => {
         const tokenData = response.data;
         setTokens(tokenData);
 
-        // Calculate Total Market Cap
+        // Calculate total market cap
         const marketCapSum = tokenData.reduce((acc, token) => acc + token.market_cap, 0);
         setTotalMarketCap(marketCapSum);
 
-        // Calculate Average Price
+        // Calculate average token price
         const avgPrice =
           tokenData.reduce((acc, token) => acc + token.current_price, 0) / tokenData.length;
         setAveragePrice(avgPrice);
@@ -52,7 +51,7 @@ const Dashboard = () => {
     fetchTokenData();
   }, []);
 
-  // Prepare data for the top 10 tokens
+  // Prepare data for the chart (top 10 tokens by market cap)
   const topTokens = tokens.slice(0, 10);
   const chartData = {
     labels: topTokens.map(token => token.name),
@@ -60,8 +59,8 @@ const Dashboard = () => {
       {
         label: 'Market Cap (USD)',
         data: topTokens.map(token => token.market_cap),
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
     ],
@@ -85,7 +84,11 @@ const Dashboard = () => {
         },
       },
       x: {
-        ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 },
+        ticks: {
+          autoSkip: false,
+          maxRotation: 45,
+          minRotation: 45,
+        },
       },
     },
   };
@@ -106,7 +109,7 @@ const Dashboard = () => {
         <p>${averagePrice.toFixed(2)}</p>
       </div>
 
-      {/* Top 10 Tokens Chart */}
+      {/* Bar chart for top tokens */}
       <div className="chart-container">
         <Bar data={chartData} options={chartOptions} />
       </div>

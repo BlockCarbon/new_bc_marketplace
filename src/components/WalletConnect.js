@@ -1,46 +1,16 @@
-import React, { useState } from 'react';
-import { useWallet } from '../context/WalletContext'; // Import WalletContext hook
+import React from 'react';
+import { useWallet } from '../context/WalletContext';
 import metamaskLogo from '../assets/metamask.png';
 import namiLogo from '../assets/nami.png';
 
 const WalletConnect = () => {
-  const { walletAddress, walletType, connectWallet } = useWallet(); // Use global context from WalletContext
-  const [error, setError] = useState('');
-
-  // 🔥 Function to connect MetaMask
-  const connectMetaMask = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        connectWallet('MetaMask', accounts[0]); // Update global context
-      } catch (err) {
-        setError('Failed to connect MetaMask wallet');
-      }
-    } else {
-      setError('MetaMask is not installed');
-    }
-  };
-
-  // 🔥 Function to connect Nami Wallet (Cardano)
-  const connectNamiWallet = async () => {
-    if (window.cardano && window.cardano.nami) {
-      try {
-        const namiApi = await window.cardano.nami.enable();
-        const namiAccounts = await namiApi.getUsedAddresses();
-        connectWallet('Nami', namiAccounts[0]); // Update global context
-      } catch (err) {
-        setError('Failed to connect Nami wallet');
-      }
-    } else {
-      setError('Nami Wallet is not installed');
-    }
-  };
+  const { walletAddress, connectMetaMask, connectNami, disconnectWallet } = useWallet();
 
   return (
     <div style={{ textAlign: 'center', marginTop: '40px' }}>
       <h2 style={{ marginBottom: '20px' }}>Connect Your Wallet</h2>
 
-      {/* Wallet Buttons Container */}
+      {/* Wallet Connect Buttons */}
       <div
         style={{
           display: 'flex',
@@ -58,56 +28,72 @@ const WalletConnect = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '10px',
-            backgroundColor: '#f6851b',
+            backgroundColor: walletAddress ? '#6c757d' : '#f6851b',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
             padding: '10px 20px',
-            cursor: 'pointer',
+            cursor: walletAddress ? 'not-allowed' : 'pointer',
             width: '200px',
             height: '50px',
             fontSize: '16px',
             transition: 'all 0.3s ease-in-out',
           }}
+          disabled={walletAddress}
         >
           <img src={metamaskLogo} alt="MetaMask Logo" style={{ width: '24px', height: '24px' }} />
-          Connect MetaMask
+          {walletAddress ? 'Connected' : 'Connect MetaMask'}
         </button>
 
         {/* Nami Wallet Button */}
         <button
-          onClick={connectNamiWallet}
+          onClick={connectNami}
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: '10px',
-            backgroundColor: '#007bff',
+            backgroundColor: walletAddress ? '#6c757d' : '#007bff',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
             padding: '10px 20px',
-            cursor: 'pointer',
+            cursor: walletAddress ? 'not-allowed' : 'pointer',
             width: '200px',
             height: '50px',
             fontSize: '16px',
             transition: 'all 0.3s ease-in-out',
           }}
+          disabled={walletAddress}
         >
           <img src={namiLogo} alt="Nami Logo" style={{ width: '24px', height: '24px' }} />
-          Connect Nami Wallet
+          {walletAddress ? 'Connected' : 'Connect Nami'}
         </button>
       </div>
 
-      {/* Wallet Connection Status */}
+      {/* Wallet Address & Disconnect Button */}
       <div style={{ marginTop: '30px', fontSize: '16px' }}>
         {walletAddress && (
-          <p>
-            <strong>Connected Wallet ({walletType}):</strong> {walletAddress.slice(0, 6)}...
-            {walletAddress.slice(-4)}
-          </p>
+          <>
+            <p>Connected Address: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
+            <button
+              onClick={disconnectWallet}
+              style={{
+                backgroundColor: '#dc3545',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                padding: '10px 20px',
+                cursor: 'pointer',
+                fontSize: '16px',
+                marginTop: '10px',
+                transition: 'all 0.3s ease-in-out',
+              }}
+            >
+              Disconnect Wallet
+            </button>
+          </>
         )}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
       </div>
     </div>
   );

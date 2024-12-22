@@ -3,27 +3,29 @@ import React, { createContext, useContext, useState } from 'react';
 const WalletContext = createContext();
 
 export const WalletProvider = ({ children }) => {
-  const [walletAddress, setWalletAddress] = useState('');
-  const [walletType, setWalletType] = useState('');
+  const [walletAddress, setWalletAddress] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(0); // 🔥 Store wallet balance
+  const [tokenList, setTokenList] = useState([]); // 🔥 Store native tokens
 
   const connectWallet = async () => {
-    if (!window.cardano || !window.cardano.nami) {
+    if (window.cardano && window.cardano.nami) {
+      try {
+        const api = await window.cardano.nami.enable();
+        const balance = await api.getBalance();
+        setWalletBalance(balance); // Store balance
+        const tokens = await api.getAssets();
+        setTokenList(tokens); // Store list of native tokens
+        setWalletAddress('your wallet address'); // Placeholder
+      } catch (error) {
+        console.error('Error connecting to Nami wallet:', error);
+      }
+    } else {
       alert('Nami Wallet is required to use this feature. Please install it.');
-      return;
-    }
-    try {
-      const api = await window.cardano.nami.enable();
-      const addresses = await api.getUsedAddresses();
-      const baseAddress = await api.getChangeAddress();
-      setWalletAddress(baseAddress); // Store the first address in global state
-      setWalletType('Nami');
-    } catch (error) {
-      console.error('Error connecting to wallet:', error);
     }
   };
 
   return (
-    <WalletContext.Provider value={{ walletAddress, walletType, connectWallet }}>
+    <WalletContext.Provider value={{ walletAddress, walletBalance, tokenList, connectWallet }}>
       {children}
     </WalletContext.Provider>
   );

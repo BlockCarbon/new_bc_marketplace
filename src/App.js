@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { WalletProvider, useWallet } from './context/WalletContext'; // Only import WalletProvider
+import { WalletProvider } from './context/WalletContext'; 
 import Homepage from './components/Homepage';
 import Dashboard from './components/Dashboard';
-import Assets from './components/Assets'; // Updated to use correct component name
+import AssetDetail from './components/Assets';
 import Navigation from './components/Navigation'; 
 import Footer from './components/Footer'; 
 import TokenList from './components/TokenList'; 
@@ -14,34 +14,18 @@ const App = () => {
     <WalletProvider> 
       <Router>
         <header>
-          <h1>BlockCarbon Marketplace</h1>
-          <WalletButton /> {/* Wallet button added to header for visibility */}
+         <h1>My Marketplace</h1>
         </header>
-        
         <Navigation />
-        
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/assets" element={<Assets />} /> {/* Updated from AssetDetail to Assets */}
+          <Route path="/assets" element={<AssetDetail />} />
           <Route path="/tokens" element={<TokenList />} />
         </Routes>
-        
         <Footer />
       </Router>
     </WalletProvider>
-  );
-};
-
-const WalletButton = () => {
-  const { walletAddress, connectWallet } = useWallet();
-
-  return (
-    <button onClick={connectWallet} className="wallet-button">
-      {walletAddress 
-        ? `Connected: ${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` 
-        : 'Connect Wallet'}
-    </button>
   );
 };
 

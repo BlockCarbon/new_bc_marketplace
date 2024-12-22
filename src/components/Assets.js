@@ -9,7 +9,7 @@ const Assets = () => {
   const [assets, setAssets] = useState([]);
   const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
 
-  // 🔥 Function to fetch the user's assets
+  // Function to fetch the user's assets
   const fetchAssets = async () => {
     if (!walletAddress) return;
     try {
@@ -22,24 +22,26 @@ const Assets = () => {
         },
       });
 
-      // Simulated user's holdings for demonstration purposes
+      // Simulated user's holdings
       const userHoldings = [
         { id: 'bitcoin', symbol: 'btc', balance: 0.5 },
         { id: 'ethereum', symbol: 'eth', balance: 2 },
         { id: 'cardano', symbol: 'ada', balance: 500 },
       ];
 
-      const userAssets = response.data.map(token => {
-        const userToken = userHoldings.find(holding => holding.id === token.id);
-        if (userToken) {
-          return {
-            ...token,
-            balance: userToken.balance,
-            totalValue: userToken.balance * token.current_price,
-          };
-        }
-        return null;
-      }).filter(Boolean); // Remove null values
+      const userAssets = response.data
+        .map(token => {
+          const userToken = userHoldings.find(holding => holding.id === token.id);
+          if (userToken) {
+            return {
+              ...token,
+              balance: userToken.balance,
+              totalValue: userToken.balance * token.current_price,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean); // Remove null values
 
       setAssets(userAssets);
 
@@ -108,7 +110,9 @@ const Assets = () => {
       {/* Portfolio Distribution Chart */}
       <section className="portfolio-distribution">
         <h3>Portfolio Distribution</h3>
-        <Pie data={chartData} options={chartOptions} />
+        <div className="chart-wrapper">
+          <Pie data={chartData} options={chartOptions} />
+        </div>
       </section>
 
       {/* List of Tokens */}

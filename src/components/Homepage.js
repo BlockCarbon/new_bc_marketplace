@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import WalletConnect from './WalletConnect';
 import axios from 'axios';
-import Chart from 'chart.js/auto'; // For graph/chart visualization
 import './Homepage.css'; // Add custom styles for the homepage
 
 const Homepage = () => {
@@ -12,7 +11,6 @@ const Homepage = () => {
   const [topLosers, setTopLosers] = useState([]);
   const [trendingTokens, setTrendingTokens] = useState([]);
 
-  // 🔥 Fetch Market Data from CoinGecko (or your API)
   const fetchMarketData = async () => {
     try {
       const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
@@ -29,37 +27,32 @@ const Homepage = () => {
       setTotalTokensListed(tokens.length);
       const totalCap = tokens.reduce((acc, token) => acc + token.market_cap, 0);
       setTotalMarketCap(totalCap);
-      
+
       const avgPrice = tokens.reduce((acc, token) => acc + token.current_price, 0) / tokens.length;
       setAverageTokenPrice(avgPrice);
 
-      // Top Gainers & Losers
       const sortedByChange = [...tokens].sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h);
-      setTopGainers(sortedByChange.slice(0, 5)); // Top 5 gainers
-      setTopLosers(sortedByChange.slice(-5).reverse()); // Bottom 5 (reversed for ascending order)
-      
-      // Trending Tokens (can customize logic here)
-      setTrendingTokens(tokens.slice(0, 10)); // Show 10 trending tokens
+      setTopGainers(sortedByChange.slice(0, 5));
+      setTopLosers(sortedByChange.slice(-5).reverse());
+
+      setTrendingTokens(tokens.slice(0, 10));
     } catch (error) {
       console.error('Error fetching market data:', error);
     }
   };
 
-  // 🔄 Call fetchMarketData on component mount
   useEffect(() => {
     fetchMarketData();
   }, []);
 
   return (
     <div className="homepage">
-      {/* 🌟 Hero Section */}
       <section className="hero-section">
         <h1>Welcome to the Carbon Marketplace</h1>
         <p>Explore and trade carbon credits securely and transparently.</p>
         <WalletConnect />
       </section>
 
-      {/* 📊 Market Overview */}
       <section className="market-overview">
         <h2>Market Overview</h2>
         <div className="overview-cards">
@@ -78,7 +71,6 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* 🚀 Top Gainers & Losers */}
       <section className="top-movers">
         <h2>Top Gainers & Losers</h2>
         <div className="movers-container">
@@ -105,7 +97,6 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* 🚀 Trending Tokens */}
       <section className="trending-tokens">
         <h2>Trending Tokens</h2>
         <div className="trending-container">
@@ -118,9 +109,15 @@ const Homepage = () => {
           ))}
         </div>
       </section>
+
+      <footer className="footer">
+        <div className="powered-by-cardano">
+          <p>Powered by Cardano</p>
+        </div>
+        <p>© 2024 Carbon Marketplace</p>
+      </footer>
     </div>
   );
 };
 
 export default Homepage;
-

@@ -93,3 +93,19 @@
 .asset-table td {
   color: #555;
 }
+
+/* Disconnect Button */
+.disconnect-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.disconnect-button:hover {
+  background-color: #c82333;
+}
