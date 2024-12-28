@@ -4,6 +4,25 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f9f9f9;
+  color: #333; /* Default text color */
+}
+
+header {
+  background-color: #282c34; /* Cardano dark theme */
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.network-status {
+  font-size: 1rem;
+  color: #3cc8c8; /* Cardano turquoise */
+  margin-top: 10px;
 }
 
 .container {
@@ -18,4 +37,8 @@ footer {
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+
+footer p {
+  margin: 0;
 }

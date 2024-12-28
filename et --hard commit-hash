@@ -1,0 +1,60 @@
+[33mcommit fc450edf2bfbb947d7decdc228832ffff4cecea2[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Sun Dec 22 07:42:50 2024 +0700
+
+    Prepare deployment before Blockfrost integration
+
+[33mcommit b67db1ca99b786361dec2031e38531b0bc54263d[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Sat Dec 21 02:26:50 2024 +0700
+
+    Update Assets tab with pie chart, portfolio summary, and token table
+
+[33mcommit b7a684d2acd7ef219df0040c740f519e2fa2b8d3[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Tue Dec 17 00:11:35 2024 +0700
+
+    Include all latest updates: Dashboard, TokenChart, and config changes
+
+[33mcommit 34b40058036ad8e168b86e2d208f30e8505b2b3d[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Mon Dec 16 23:52:04 2024 +0700
+
+    Enhance dashboard with token metrics and market cap graph
+
+[33mcommit 366a0b66acaa8553fe2f6bd9933500888cc6479f[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Mon Dec 16 21:24:32 2024 +0700
+
+    Add wallet integration with improved UI/UX and icons
+
+[33mcommit 93fe53a4a2070ad182035c08950864e16fca2c1d[m
+Merge: f81d6fa c023f88
+Author: JuneA <june.akra@gmail.com>
+Date:   Mon Dec 16 15:23:36 2024 +0700
+
+    Resolved merge conflicts in README.md
+
+[33mcommit f81d6fa0adc1ec89315cc6d58ea9fa53965f2b77[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Mon Dec 16 13:32:27 2024 +0700
+
+    Added styles for CoinGecko tokens, token form, and user-listed tokens
+
+[33mcommit c023f881a8908ecf51ebe104fd8355f2581e975f[m
+Author: JuneA <june.akra@gmail.com>
+Date:   Mon Dec 16 08:26:47 2024 +0700
+
+    Initial commit with full project files
+
+[33mcommit 307dcd7e4eabe79224f0d71565549b728839ec7d[m
+Author: June A. <40224657+fuguswarm@users.noreply.github.com>
+Date:   Mon Dec 16 08:25:13 2024 +0700
+
+    Initial commit
+
+[33mcommit f1f7635c9811dcbfe97f41ce1a208d792c5f9b95[m
+Author: June A. <40224657+fuguswarm@users.noreply.github.com>
+Date:   Thu Nov 28 12:24:33 2024 +0700
+
+    Initial commit
