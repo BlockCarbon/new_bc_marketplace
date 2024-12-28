@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Dashboard.css';
 import { Bar } from 'react-chartjs-2';
+import TokenLinks from './TokenLinks'; // Import the new TokenLinks component
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -96,6 +97,8 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <h1>Marketplace Dashboard</h1>
+
+      {/* Metric cards */}
       <div className="metric-card">
         <h2>Total Tokens Listed</h2>
         <p>{tokens.length}</p>
@@ -112,6 +115,11 @@ const Dashboard = () => {
       {/* Bar chart for top tokens */}
       <div className="chart-container">
         <Bar data={chartData} options={chartOptions} />
+      </div>
+
+      {/* TokenLinks Section */}
+      <div className="token-links-container">
+        <TokenLinks />
       </div>
     </div>
   );
