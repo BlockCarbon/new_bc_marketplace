@@ -1,100 +1,89 @@
 import React from 'react';
 import { useWallet } from '../context/WalletContext';
-import metamaskLogo from '../assets/metamask.png';
-import namiLogo from '../assets/nami.png';
 
 const WalletConnect = () => {
-  const { walletAddress, connectMetaMask, connectNami, disconnectWallet } = useWallet();
+  const { walletAddress, walletBalance, tokenList, connectWallet, refreshWalletData, disconnectWallet } = useWallet();
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '40px' }}>
-      <h2 style={{ marginBottom: '20px' }}>Connect Your Wallet</h2>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '20vh', // Compact height
+        flexDirection: 'column',
+        textAlign: 'center',
+        padding: '5px',
+        margin: '0 auto',
+      }}
+    >
+      <h2 style={{ marginBottom: '5px', fontSize: '16px' }}>Connect Your Wallet</h2>
 
-      {/* Wallet Connect Buttons */}
-      <div
+      {/* Wallet Connect Button */}
+      <button
+        onClick={connectWallet}
         style={{
           display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
-          gap: '20px',
-          flexWrap: 'wrap',
-          marginTop: '20px',
+          backgroundColor: walletAddress ? '#6c757d' : '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          padding: '8px 16px',
+          cursor: walletAddress ? 'not-allowed' : 'pointer',
+          width: '160px',
+          height: '40px',
+          fontSize: '12px',
+          transition: 'all 0.3s ease-in-out',
         }}
+        disabled={!!walletAddress}
       >
-        {/* MetaMask Button */}
-        <button
-          onClick={connectMetaMask}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            backgroundColor: walletAddress ? '#6c757d' : '#f6851b',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            padding: '10px 20px',
-            cursor: walletAddress ? 'not-allowed' : 'pointer',
-            width: '200px',
-            height: '50px',
-            fontSize: '16px',
-            transition: 'all 0.3s ease-in-out',
-          }}
-          disabled={walletAddress}
-        >
-          <img src={metamaskLogo} alt="MetaMask Logo" style={{ width: '24px', height: '24px' }} />
-          {walletAddress ? 'Connected' : 'Connect MetaMask'}
-        </button>
+        {walletAddress ? 'Wallet Connected' : 'Connect Wallet'}
+      </button>
 
-        {/* Nami Wallet Button */}
-        <button
-          onClick={connectNami}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            backgroundColor: walletAddress ? '#6c757d' : '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            padding: '10px 20px',
-            cursor: walletAddress ? 'not-allowed' : 'pointer',
-            width: '200px',
-            height: '50px',
-            fontSize: '16px',
-            transition: 'all 0.3s ease-in-out',
-          }}
-          disabled={walletAddress}
-        >
-          <img src={namiLogo} alt="Nami Logo" style={{ width: '24px', height: '24px' }} />
-          {walletAddress ? 'Connected' : 'Connect Nami'}
-        </button>
-      </div>
-
-      {/* Wallet Address & Disconnect Button */}
-      <div style={{ marginTop: '30px', fontSize: '16px' }}>
-        {walletAddress && (
-          <>
-            <p>Connected Address: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}</p>
-            <button
-              onClick={disconnectWallet}
-              style={{
-                backgroundColor: '#dc3545',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                padding: '10px 20px',
-                cursor: 'pointer',
-                fontSize: '16px',
-                marginTop: '10px',
-                transition: 'all 0.3s ease-in-out',
-              }}
-            >
-              Disconnect Wallet
-            </button>
-          </>
-        )}
-      </div>
+      {/* Wallet Info Section */}
+      {walletAddress && (
+        <div style={{ marginTop: '5px', fontSize: '12px' }}>
+          <p>
+            <strong>Connected Address:</strong> {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+          </p>
+          <p>
+            <strong>Wallet Balance:</strong> {walletBalance} ADA
+          </p>
+          <button
+            onClick={refreshWalletData}
+            style={{
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              padding: '6px 12px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              marginTop: '5px',
+            }}
+          >
+            Refresh Wallet Data
+          </button>
+          <button
+            onClick={disconnectWallet}
+            style={{
+              backgroundColor: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              padding: '6px 12px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              marginTop: '5px',
+              transition: 'all 0.3s ease-in-out',
+            }}
+          >
+            Disconnect Wallet
+          </button>
+        </div>
+      )}
     </div>
   );
 };

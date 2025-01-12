@@ -11,6 +11,8 @@ const Homepage = () => {
   const [topLosers, setTopLosers] = useState([]);
   const [trendingTokens, setTrendingTokens] = useState([]);
 
+  const currentEpoch = 533; // Manually update this value when the epoch changes
+
   const fetchMarketData = async () => {
     try {
       const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
@@ -50,6 +52,7 @@ const Homepage = () => {
       <section className="hero-section">
         <h1>Welcome to the Carbon Marketplace</h1>
         <p>Explore and trade carbon credits securely and transparently.</p>
+        <p style={{ fontWeight: 'bold', color: '#007bff' }}>Epoch: {currentEpoch}</p> {/* Display the manual epoch */}
         <WalletConnect />
       </section>
 

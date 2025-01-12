@@ -7,16 +7,17 @@ import AssetDetail from './components/Assets';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import TokenList from './components/TokenList';
-import NetworkStatus from './components/NetworkStatus';
 import './index.css';
 
 const App = () => {
+  const currentEpoch = 533; // Hardcoded epoch value
+
   return (
     <WalletProvider>
       <Router>
-        <header>
+        <header style={{ padding: '20px', backgroundColor: '#282c34', color: 'white' }}>
           <h1>BlockCarbon Marketplace</h1>
-          <NetworkStatus /> {/* Add Network Status here */}
+          <p style={{ color: '#17a2b8', margin: '5px 0' }}>Epoch: {currentEpoch} (Predicted)</p>
         </header>
         <Navigation />
         <Routes>

@@ -1,67 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { useWallet } from '../context/WalletContext'; // Wallet context for wallet address
-import axios from 'axios';
+import { useWallet } from '../context/WalletContext'; // Wallet context for wallet address and token list
 import { Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 import './Assets.css';
 
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend);
+
 const Assets = () => {
-  const { walletAddress } = useWallet();
+  const { walletAddress, tokenList } = useWallet();
   const [assets, setAssets] = useState([]);
   const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
+  const [isExampleData, setIsExampleData] = useState(false);
 
-  // Function to fetch the user's assets
-  const fetchAssets = async () => {
-    if (!walletAddress) return;
-    try {
-      const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
-        params: {
-          vs_currency: 'usd',
-          order: 'market_cap_desc',
-          per_page: 50,
-          page: 1,
-        },
-      });
-
-      // Simulated user's holdings
-      const userHoldings = [
-        { id: 'bitcoin', symbol: 'btc', balance: 0.5 },
-        { id: 'ethereum', symbol: 'eth', balance: 2 },
-        { id: 'cardano', symbol: 'ada', balance: 500 },
-      ];
-
-      const userAssets = response.data
-        .map(token => {
-          const userToken = userHoldings.find(holding => holding.id === token.id);
-          if (userToken) {
-            return {
-              ...token,
-              balance: userToken.balance,
-              totalValue: userToken.balance * token.current_price,
-            };
-          }
-          return null;
-        })
-        .filter(Boolean); // Remove null values
-
-      setAssets(userAssets);
-
-      const totalValue = userAssets.reduce((acc, token) => acc + token.totalValue, 0);
-      setTotalPortfolioValue(totalValue);
-    } catch (error) {
-      console.error('Error fetching assets:', error);
-    }
-  };
+  // Example data for fallback
+  const exampleAssets = [
+    { assetName: 'Sample ADA', policyId: 'N/A', quantity: 1_000_000_000 },
+    { assetName: 'Sample Token A', policyId: '00000000000000000000000000000000000000000000000000000001', quantity: 500_000_000 },
+    { assetName: 'Sample Token B', policyId: '00000000000000000000000000000000000000000000000000000002', quantity: 250_000_000 },
+  ];
 
   useEffect(() => {
-    if (walletAddress) fetchAssets();
-  }, [walletAddress]);
+    if (walletAddress && tokenList.length > 0) {
+      // Use wallet data if available
+      setAssets(tokenList);
+      const totalValue = tokenList.reduce((acc, token) => acc + token.quantity, 0);
+      setTotalPortfolioValue(totalValue / 1_000_000); // Convert to ADA
+      setIsExampleData(false);
+    } else {
+      // Use example data if wallet data is unavailable
+      setAssets(exampleAssets);
+      const totalValue = exampleAssets.reduce((acc, token) => acc + token.quantity, 0);
+      setTotalPortfolioValue(totalValue / 1_000_000); // Convert to ADA
+      setIsExampleData(true);
+    }
+  }, [walletAddress, tokenList]);
 
   const chartData = {
-    labels: assets.map(asset => asset.name),
+    labels: assets.map(asset => asset.assetName || 'ADA'),
     datasets: [
       {
         label: 'Portfolio Distribution',
-        data: assets.map(asset => asset.totalValue),
+        data: assets.map(asset => asset.quantity / 1_000_000), // Normalize for ADA units
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
         hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
       },
@@ -83,23 +68,22 @@ const Assets = () => {
     },
   };
 
-  if (!walletAddress) {
-    return (
-      <div className="assets-container">
-        <h2>Please connect your wallet to see your assets.</h2>
-      </div>
-    );
-  }
-
   return (
     <div className="assets-container">
       <h2 className="assets-header">Your Portfolio</h2>
+
+      {/* Example Data Notice */}
+      {isExampleData && (
+        <p style={{ color: '#666', fontStyle: 'italic' }}>
+          *Preloaded example data is displayed for demonstration purposes. Connect your wallet to view your actual assets.
+        </p>
+      )}
 
       {/* Portfolio Overview Section */}
       <section className="portfolio-overview">
         <div className="info-card">
           <h3>Total Portfolio Value</h3>
-          <p>${totalPortfolioValue.toLocaleString()}</p>
+          <p>{totalPortfolioValue.toLocaleString()} ADA</p>
         </div>
         <div className="info-card">
           <h3>Total Tokens Held</h3>
@@ -121,21 +105,17 @@ const Assets = () => {
         <table className="asset-table">
           <thead>
             <tr>
-              <th>Token</th>
-              <th>Symbol</th>
-              <th>Balance</th>
-              <th>Current Price</th>
-              <th>Total Value</th>
+              <th>Asset Name</th>
+              <th>Policy ID</th>
+              <th>Quantity (ADA)</th>
             </tr>
           </thead>
           <tbody>
-            {assets.map(asset => (
-              <tr key={asset.id}>
-                <td>{asset.name}</td>
-                <td>{asset.symbol.toUpperCase()}</td>
-                <td>{asset.balance}</td>
-                <td>${asset.current_price.toFixed(2)}</td>
-                <td>${asset.totalValue.toFixed(2)}</td>
+            {assets.map((token, index) => (
+              <tr key={index}>
+                <td>{token.assetName || 'ADA'}</td>
+                <td>{token.policyId || '—'}</td>
+                <td>{(token.quantity / 1_000_000).toFixed(6)}</td>
               </tr>
             ))}
           </tbody>
