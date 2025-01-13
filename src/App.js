@@ -7,6 +7,7 @@ import AssetDetail from './components/Assets';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import TokenList from './components/TokenList';
+import WalletSelector from './components/WalletSelector'; // Import WalletSelector
 import './index.css';
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
         <header style={{ padding: '20px', backgroundColor: '#282c34', color: 'white' }}>
           <h1>BlockCarbon Marketplace</h1>
           <p style={{ color: '#17a2b8', margin: '5px 0' }}>Epoch: {currentEpoch} (Predicted)</p>
+          <WalletSelector /> {/* Add WalletSelector to the header */}
         </header>
         <Navigation />
         <Routes>

@@ -5,7 +5,7 @@ const NetworkStatus = () => {
 
   useEffect(() => {
     // Hardcoded epoch status
-    setStatus("Epoch: 423 (Predicted)");
+    setStatus("Epoch: 533");
   }, []);
 
   return <p className="network-status">{status}</p>;
