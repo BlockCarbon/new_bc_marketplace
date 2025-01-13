@@ -2,7 +2,14 @@ import React from 'react';
 import { useWallet } from '../context/WalletContext';
 
 const WalletConnect = () => {
-  const { walletAddress, walletBalance, tokenList, connectWallet, refreshWalletData, disconnectWallet } = useWallet();
+  const {
+    walletAddress,
+    selectedWallet,
+    availableWallets,
+    setSelectedWallet,
+    connectWallet,
+    disconnectWallet,
+  } = useWallet();
 
   return (
     <div
@@ -10,79 +17,77 @@ const WalletConnect = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '20vh', // Compact height
+        height: '20vh',
         flexDirection: 'column',
         textAlign: 'center',
         padding: '5px',
         margin: '0 auto',
       }}
     >
-      <h2 style={{ marginBottom: '5px', fontSize: '16px' }}>Connect Your Wallet</h2>
+      {/* Dynamic Heading */}
+      <h2 style={{ marginBottom: '10px', fontSize: '16px' }}>
+        {walletAddress ? 'Manage Your Wallet' : 'Connect Your Wallet'}
+      </h2>
 
-      {/* Wallet Connect Button */}
-      <button
-        onClick={connectWallet}
+      {/* Wallet Selector Dropdown */}
+      <select
+        value={selectedWallet || ''}
+        onChange={(e) => setSelectedWallet(e.target.value)}
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: walletAddress ? '#6c757d' : '#007bff',
-          color: 'white',
-          border: 'none',
+          padding: '8px',
+          fontSize: '14px',
           borderRadius: '5px',
-          padding: '8px 16px',
-          cursor: walletAddress ? 'not-allowed' : 'pointer',
-          width: '160px',
-          height: '40px',
-          fontSize: '12px',
-          transition: 'all 0.3s ease-in-out',
+          marginBottom: '10px',
+          backgroundColor: !!walletAddress ? '#f0f0f0' : 'white',
+          color: !!walletAddress ? '#6c757d' : 'black',
+          cursor: !!walletAddress ? 'not-allowed' : 'pointer',
         }}
-        disabled={!!walletAddress}
+        disabled={!!walletAddress} // Disable dropdown if a wallet is connected
       >
-        {walletAddress ? 'Wallet Connected' : 'Connect Wallet'}
-      </button>
+        <option value="" disabled>
+          Select Wallet
+        </option>
+        {availableWallets.map((wallet) => (
+          <option key={wallet} value={wallet}>
+            {wallet}
+          </option>
+        ))}
+      </select>
 
-      {/* Wallet Info Section */}
-      {walletAddress && (
-        <div style={{ marginTop: '5px', fontSize: '12px' }}>
-          <p>
-            <strong>Connected Address:</strong> {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
-          </p>
-          <p>
-            <strong>Wallet Balance:</strong> {walletBalance} ADA
-          </p>
-          <button
-            onClick={refreshWalletData}
-            style={{
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              padding: '6px 12px',
-              cursor: 'pointer',
-              fontSize: '12px',
-              marginTop: '5px',
-            }}
-          >
-            Refresh Wallet Data
-          </button>
-          <button
-            onClick={disconnectWallet}
-            style={{
-              backgroundColor: '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              padding: '6px 12px',
-              cursor: 'pointer',
-              fontSize: '12px',
-              marginTop: '5px',
-              transition: 'all 0.3s ease-in-out',
-            }}
-          >
-            Disconnect Wallet
-          </button>
-        </div>
+      {/* Conditional Connect/Disconnect Button */}
+      {walletAddress ? (
+        <button
+          onClick={disconnectWallet}
+          style={{
+            backgroundColor: '#dc3545',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            padding: '10px 20px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            transition: 'all 0.3s ease-in-out',
+          }}
+        >
+          Disconnect Wallet
+        </button>
+      ) : (
+        <button
+          onClick={connectWallet}
+          style={{
+            backgroundColor: selectedWallet ? '#007bff' : '#6c757d',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            padding: '10px 20px',
+            cursor: selectedWallet ? 'pointer' : 'not-allowed',
+            fontSize: '14px',
+            transition: 'all 0.3s ease-in-out',
+          }}
+          disabled={!selectedWallet} // Disable button if no wallet is selected
+        >
+          Connect Wallet
+        </button>
       )}
     </div>
   );

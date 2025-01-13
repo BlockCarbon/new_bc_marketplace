@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useWallet } from '../context/WalletContext'; // Wallet context for wallet address and token list
 import { Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -13,10 +12,8 @@ import './Assets.css';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Assets = () => {
-  const { walletAddress, tokenList } = useWallet();
   const [assets, setAssets] = useState([]);
   const [totalPortfolioValue, setTotalPortfolioValue] = useState(0);
-  const [isExampleData, setIsExampleData] = useState(false);
 
   // Example data for fallback
   const exampleAssets = [
@@ -26,20 +23,11 @@ const Assets = () => {
   ];
 
   useEffect(() => {
-    if (walletAddress && tokenList.length > 0) {
-      // Use wallet data if available
-      setAssets(tokenList);
-      const totalValue = tokenList.reduce((acc, token) => acc + token.quantity, 0);
-      setTotalPortfolioValue(totalValue / 1_000_000); // Convert to ADA
-      setIsExampleData(false);
-    } else {
-      // Use example data if wallet data is unavailable
-      setAssets(exampleAssets);
-      const totalValue = exampleAssets.reduce((acc, token) => acc + token.quantity, 0);
-      setTotalPortfolioValue(totalValue / 1_000_000); // Convert to ADA
-      setIsExampleData(true);
-    }
-  }, [walletAddress, tokenList]);
+    // Load example data
+    setAssets(exampleAssets);
+    const totalValue = exampleAssets.reduce((acc, token) => acc + token.quantity, 0);
+    setTotalPortfolioValue(totalValue / 1_000_000); // Convert to ADA
+  }, []);
 
   const chartData = {
     labels: assets.map(asset => asset.assetName || 'ADA'),
@@ -71,13 +59,6 @@ const Assets = () => {
   return (
     <div className="assets-container">
       <h2 className="assets-header">Your Portfolio</h2>
-
-      {/* Example Data Notice */}
-      {isExampleData && (
-        <p style={{ color: '#666', fontStyle: 'italic' }}>
-          *Preloaded example data is displayed for demonstration purposes. Connect your wallet to view your actual assets.
-        </p>
-      )}
 
       {/* Portfolio Overview Section */}
       <section className="portfolio-overview">
