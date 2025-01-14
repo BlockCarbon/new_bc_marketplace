@@ -9,6 +9,7 @@ const Navigation = () => {
         <li><Link to="/dashboard">Dashboard</Link></li>
         <li><Link to="/assets">Assets</Link></li>
         <li><Link to="/tokens">View Tokens</Link></li>
+        <li><Link to="/token-management">Token Management</Link></li> {/* New Token Management link */}
       </ul>
     </nav>
   );

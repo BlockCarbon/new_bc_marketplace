@@ -7,6 +7,7 @@ import AssetDetail from './components/Assets'; // Independent from WalletContext
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import TokenList from './components/TokenList';
+import TokenManagement from './components/TokenManagement'; // Import TokenManagement component
 
 const App = () => {
   return (
@@ -37,6 +38,8 @@ const App = () => {
         {/* AssetDetail and TokenList are independent of WalletProvider */}
         <Route path="/assets" element={<AssetDetail />} />
         <Route path="/tokens" element={<TokenList />} />
+        {/* Add route for TokenManagement */}
+        <Route path="/token-management" element={<TokenManagement />} />
       </Routes>
       <Footer />
     </Router>
@@ -44,5 +47,3 @@ const App = () => {
 };
 
 export default App;
-
-

@@ -1,0 +1,67 @@
+.token-management-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .token-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .token-table th, 
+  .token-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .token-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  .token-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .token-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .action-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .mint-button {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .mint-button:hover {
+    background-color: #218838;
+  }
+  
+  .retire-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .retire-button:hover {
+    background-color: #c82333;
+  }
+  
