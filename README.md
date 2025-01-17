@@ -1,6 +1,8 @@
 
-# BCMarketPlace
-=======
+# **BlockCarbon MarketPlace**
+
+***
+
 # Installation Guide
 
 See [more React documentation](https://facebook.github.io/create-react-app/docs/getting-started)
