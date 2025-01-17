@@ -5,7 +5,7 @@
 
 ***
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, please run:
 
